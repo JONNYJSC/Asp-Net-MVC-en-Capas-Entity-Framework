@@ -1,0 +1,79 @@
+﻿@model ENTIDAD.Proyecto
+
+@{
+    ViewBag.Title = "Crear Proyecto";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form action="@Url.Action("Crear","Proyecto")" method="post" id="frmProyecto">
+
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Crear Nuevo Proyecto</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <label class="control-label col-md-2">Nombre del Proyecto</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" id="NombreProyecto" name="NombreProyecto"
+                       placeholder="Ingresa nombre del proyecto" />
+                @Html.ValidationMessageFor(model => model.NombreProyecto, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Fecha de Inicio</label>
+            <div class="col-md-10">
+                <input type="date" class="form-control" id="FechaInicio" name="FechaInicio" />
+                @Html.ValidationMessageFor(model => model.FechaInicio, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Fecha Fin</label>
+            <div class="col-md-10">
+                <input type="date" class="form-control" id="FechaFin" name="FechaFin" />
+                @Html.ValidationMessageFor(model => model.FechaFin, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Crear Proyecto" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    @Html.ActionLink("Regresar", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
+    $("#frmProyecto").submit(function (event) {
+        event.preventDefault(); //Evita que la pagina se recargue
+
+        var post_url = $(this).attr("action"); // Enviamos la accion
+        var request_method = $(this).attr("method"); // Enviamos form GET/POST
+        var form_data = $(this).serializeArray(); // Encode form elements for submission
+        console.log(form_data);
+        $.ajax({
+            url: post_url,
+            type: request_method,
+            data: form_data
+        }).done(function (response) {
+            console.log(response);
+            if (response.ok) {
+                alert("Proyecto creado correctamente!!!");
+                window.location = response.toRedirect;
+            }
+            else { alert(response.msg); }
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+
+        });
+    });
+</script>
+}
