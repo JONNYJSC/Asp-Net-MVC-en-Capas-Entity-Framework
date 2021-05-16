@@ -8,27 +8,50 @@
 <h2>Departamentos</h2>
 
 <p>
-    @Html.ActionLink("Crear Departamento", "Crear","Departamento")
+    <a class="btn btn-primary" href="@Url.Action("Crear","Departamento")"><i class="glyphicon glyphicon-plus"></i> Crear Nuevo</a>
 </p>
-<table class="table">
-    <tr>
-        <th>
-            Nombre Departamento
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.NombreDepartamento)
-        </td>
-        <td>
-            @Html.ActionLink("Editar", "Editar", new { id=item.DepartamentoId }) |
-            @Html.ActionLink("Detalles", "GetDepartamento", new { id=item.DepartamentoId }) |
-            @Html.ActionLink("Eliminar", "Eliminar", new { id=item.DepartamentoId })
-        </td>
-    </tr>
-}
+<table class="table" id="tableStyle">
+    <thead>
+        <tr>
+            <th>
+                Nombre Departamento
+            </th>
+            <th>
+                Acciones
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NombreDepartamento)
+                </td>
+                <td>
+                    <a title="Editar" href="@Url.Action("Editar", "Departamento", new { id=item.DepartamentoId })" class="btn btn-primary btn-xs">
+                        <i class="glyphicon glyphicon-edit"></i>
+                    </a>
+                    <a title="Detalles" href="@Url.Action("GetDepartamento", "Departamento", new { id=item.DepartamentoId })" class="btn btn-info btn-xs">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                    </a>
+                    <a title="Eliminar" href="@Url.Action("Eliminar", "Departamento", new { id=item.DepartamentoId })" class="btn btn-danger btn-xs">
+                        <i class="glyphicon glyphicon-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
 
 </table>
+
+@section Scripts {
+    <script>
+        $('#tableStyle').DataTable({
+            "pageLength": 5,
+            lengthMenu: [5, 10, 20, 50, 100, 200, 500],
+        });
+    </script>
+}

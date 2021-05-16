@@ -56,24 +56,53 @@
     $("#frmProyecto").submit(function (event) {
         event.preventDefault(); //Evita que la pagina se recargue
 
+        // Jquery
+        // trae el valor del text box
+        var nombre = $("#NombreProyecto").val();
+        var fechaInicio = $("#FechaInicio").val();
+        var fechaFin = $("#FechaFin").val();
+
+        // trim no permite espacios en blanco
+        if ($.trim(nombre) == "") {
+            alert("Debe ingresar el nombre del proyecto!!!");
+            return;
+        }
+
+        if (fechaInicio == "" || fechaFin == "") {
+            alert("Debe ingresar la Fecha de Inicio y la Fecha Fin!!!");
+            return;
+        }
+
+        if (ValidarFechas(fechaInicio, fechaFin) == false) {
+            alert("La Fecha Fin no puede ser menor a la Fecha de Inicio!!!");
+            return;
+        }
+        ;
         var post_url = $(this).attr("action"); // Enviamos la accion
         var request_method = $(this).attr("method"); // Enviamos form GET/POST
         var form_data = $(this).serializeArray(); // Encode form elements for submission
         console.log(form_data);
+
+        LoadingOverlayShow("#frmProyecto");
+
         $.ajax({
             url: post_url,
             type: request_method,
             data: form_data
         }).done(function (response) {
             console.log(response);
+
+            LoadingOverlayHide("#frmProyecto");
+
             if (response.ok) {
                 alert("Proyecto creado correctamente!!!");
                 window.location = response.toRedirect;
             }
             else { alert(response.msg); }
         }).fail(function (jqXHR, textStatus, errorThrown) {
-
+            LoadingOverlayHide("#frmProyecto");
         });
     });
+        
 </script>
 }
