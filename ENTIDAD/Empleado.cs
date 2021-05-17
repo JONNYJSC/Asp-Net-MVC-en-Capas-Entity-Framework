@@ -14,6 +14,12 @@ namespace ENTIDAD
     
     public partial class Empleado
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Empleado()
+        {
+            this.ProyectoEmpleado = new HashSet<ProyectoEmpleado>();
+        }
+    
         public int EmpleadoId { get; set; }
         public string Nombres { get; set; }
         public string Apellidos { get; set; }
@@ -21,9 +27,9 @@ namespace ENTIDAD
         public string Direccion { get; set; }
         public string Celular { get; set; }
         public int DepartamentoId { get; set; }
-        public int ProyectoId { get; set; }
     
         public virtual Departamento Departamento { get; set; }
-        public virtual Proyecto Proyecto { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProyectoEmpleado> ProyectoEmpleado { get; set; }
     }
 }

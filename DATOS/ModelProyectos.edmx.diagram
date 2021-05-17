@@ -6,11 +6,13 @@
     <edmx:Diagrams>
       <Diagram DiagramId="a58e619932b143b3b7352cbcf6d69b42" Name="Diagram1">
         <EntityTypeShape EntityType="dbProyectoModel.Departamento" Width="1.5" PointX="5" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbProyectoModel.Empleado" Width="1.5" PointX="7.25" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="dbProyectoModel.Proyecto" Width="1.5" PointX="5" PointY="5.25" IsExpanded="true" />
-        <AssociationConnector Association="dbProyectoModel.FK_Empleado_Departamento" ManuallyRouted="false" />
-        <AssociationConnector Association="dbProyectoModel.FK_Empleado_Proyecto" ManuallyRouted="false" />
-      </Diagram>
+        <EntityTypeShape EntityType="dbProyectoModel.Empleado" Width="1.5" PointX="7.25" PointY="0.75" />
+        <EntityTypeShape EntityType="dbProyectoModel.ProyectoEmpleado" Width="1.5" PointX="9.5" PointY="3" />
+        <AssociationConnector Association="dbProyectoModel.FK_Empleado_Departamento" />
+        <AssociationConnector Association="dbProyectoModel.FK_ProyectoEmpleado_Empleado" />
+        <AssociationConnector Association="dbProyectoModel.FK_ProyectoEmpleado_Proyecto" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

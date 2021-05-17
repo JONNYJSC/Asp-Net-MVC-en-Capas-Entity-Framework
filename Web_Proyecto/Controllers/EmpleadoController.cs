@@ -7,16 +7,16 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Web_Proyecto.Controllers
+namespace Web_Empleado.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class ProyectoController : Controller
+    public class EmpleadoController : Controller
     {
-        // GET: Proyecto
+        // GET: Empleado
         public ActionResult Index()
         {
-            var pctos = ProyectoCN.ListarProyectos();
-            return View(pctos);
+            var empleado = EmpleadoCN.ListarEmpleados();
+            return View(empleado);
         }
 
         [HttpGet]
@@ -27,62 +27,53 @@ namespace Web_Proyecto.Controllers
         // Enviar informacion
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Crear(Proyecto pcto)
+        public ActionResult Crear(Empleado empleado)
         {
             try
             {
-                if (pcto.NombreProyecto == null)
-                    return Json(new { ok = false, msg = "Debe ingresar el nombre del proyecto" }, JsonRequestBehavior.AllowGet);
+                if (empleado.Nombres == null)
+                    return Json(new { ok = false, msg = "Debe ingresar el nombre del Empleado" }, JsonRequestBehavior.AllowGet);
 
-                ProyectoCN.Agregar(pcto);
+                EmpleadoCN.Agregar(empleado);
                 return Json(new { ok = true, toRedirect = Url.Action("Index") }, JsonRequestBehavior.AllowGet);
                 //return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
                 return Json(new { ok = false, msg = ex.Message }, JsonRequestBehavior.AllowGet);
-                //ModelState.AddModelError("", "Ocurrió un error al agregar un Proyecto");
+                //ModelState.AddModelError("", "Ocurrió un error al agregar un Empleado");
                 //return View(pcto);
             }
         }
 
-        public ActionResult GetProyectos(int id)
+        public ActionResult GetEmpleados(int id)
         {
-            var pcto = ProyectoCN.GetProyectos(id);
-            return View(pcto);
+            var empleado = EmpleadoCN.ObtenerEmpleado(id);
+            return View(empleado);
         }
 
         [HttpGet]
         public ActionResult Editar(int id)
         {
-            var pcto = ProyectoCN.GetProyectos(id);
-            return View(pcto);
+            var empleado = EmpleadoCN.ObtenerEmpleado(id);
+            return View(empleado);
         }
 
         [HttpPost]
-        public ActionResult Editar(Proyecto pcto)
+        public ActionResult Editar(Empleado empleado)
         {
             try
             {
-                if (pcto.NombreProyecto == null)
-                    return Json(new { ok = false, msg = "Debe ingresar el nombre del proyecto" }, JsonRequestBehavior.AllowGet);
+                if (empleado.Nombres == null)
+                    return Json(new { ok = false, msg = "Debe ingresar el nombre del Empleado" }, JsonRequestBehavior.AllowGet);
 
-                ProyectoCN.Editar(pcto);
+                EmpleadoCN.Editar(empleado);
                 return Json(new { ok = true, toRedirect = Url.Action("Index") }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 return Json(new { ok = false, msg = ex.Message }, JsonRequestBehavior.AllowGet);
             }
-        }
-        [HttpGet]
-        public ActionResult Eliminar(int? id)
-        {
-            if (id == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            var pcto = ProyectoCN.GetProyectos(id.Value);
-            return View(pcto);
         }
 
         [HttpPost]
@@ -90,7 +81,7 @@ namespace Web_Proyecto.Controllers
         {
             try
             {
-                ProyectoCN.Eliminar(id);
+                EmpleadoCN.Eliminar(id);
                 return Json(new { ok = true, toRedirect = Url.Action("Index") }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)

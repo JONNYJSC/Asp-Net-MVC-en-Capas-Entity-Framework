@@ -56,6 +56,9 @@
     <Compile Include="Proyecto.cs">
       <DependentUpon>ModelProyectos.tt</DependentUpon>
     </Compile>
+    <Compile Include="ProyectoEmpleado.cs">
+      <DependentUpon>ModelProyectos.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="ModelProyectos.tt">

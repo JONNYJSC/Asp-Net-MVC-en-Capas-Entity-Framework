@@ -1,0 +1,145 @@
+﻿@model ENTIDAD.Empleado
+
+@{
+    ViewBag.Title = "Crear Empleado";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form action="@Url.Action("Crear","Empleado")" method="post" id="frmEmpleado">
+
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Crear Nuevo Empleado</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <label class="control-label col-md-2">Nombres</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" id="NombreEmpleado" name="Nombres"
+                       placeholder="Ingresa nombres del Empleado" />
+                @Html.ValidationMessageFor(model => model.Nombres, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Apellidos</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" id="Nombres" name="Apellidos"
+                       placeholder="Ingresa apellidos del Empleado" />
+                @Html.ValidationMessageFor(model => model.Apellidos, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Email</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" id="NombreEmpleado" name="Nombres"
+                       placeholder="Ingresa email del Empleado" />
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Direicción</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" id="NombreEmpleado" name="Nombres"
+                       placeholder="Ingresa direccion del Empleado" />
+                @Html.ValidationMessageFor(model => model.Direccion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Celular</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" id="NombreEmpleado" name="Nombres"
+                       placeholder="Ingresa celular del Empleado" />
+                @Html.ValidationMessageFor(model => model.Celular, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Departamentos</label>
+            <div class="col-md-10">
+                <select class="form-control" id="DepartamentoId" name="DepartamentoId">
+                    <option value="">Seleccione...</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Crear Empleado" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    @Html.ActionLink("Regresar", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
+    getDepartamentos();
+    
+    $("#frmEmpleado").submit(function (event) {
+        event.preventDefault(); //Evita que la pagina se recargue
+
+        // Jquery
+        // trae el valor del text box
+        var nombre = $("#Nombres").val();
+        var fechaInicio = $("#FechaInicio").val();
+        var fechaFin = $("#FechaFin").val();
+
+        // trim no permite espacios en blanco
+        var dptoId = $("#DepartamentoId").val();
+        if (dptoId == "") {
+            alert("Debe escoger un departamento!!!");
+            return;
+        }
+
+        if ($.trim(nombre) == "") {
+            alert("Debe ingresar el nombre del Empleado!!!");
+            return;
+        }
+
+        if (fechaInicio == "" || fechaFin == "") {
+            alert("Debe ingresar la Fecha de Inicio y la Fecha Fin!!!");
+            return;
+        }
+
+        if (ValidarFechas(fechaInicio, fechaFin) == false) {
+            alert("La Fecha Fin no puede ser menor a la Fecha de Inicio!!!");
+            return;
+        }
+
+        var post_url = $(this).attr("action"); // Enviamos la accion
+        var request_method = $(this).attr("method"); // Enviamos form GET/POST
+        var form_data = $(this).serializeArray(); // Encode form elements for submission
+        console.log(form_data);
+
+        LoadingOverlayShow("#frmEmpleado");
+
+        $.ajax({
+            url: post_url,
+            type: request_method,
+            data: form_data
+        }).done(function (response) {
+            console.log(response);
+
+            LoadingOverlayHide("#frmEmpleado");
+
+            if (response.ok) {
+                alert("Empleado creado correctamente!!!");
+                window.location = response.toRedirect;
+            }
+            else { alert(response.msg); }
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            LoadingOverlayHide("#frmEmpleado");
+        });
+    });
+        
+</script>
+}

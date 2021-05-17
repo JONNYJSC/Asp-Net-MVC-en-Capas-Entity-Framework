@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="dbProyectoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="dbProyectoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Departamento">
           <Key>
             <PropertyRef Name="DepartamentoId" />
@@ -23,7 +23,6 @@
           <Property Name="Direccion" Type="varchar" MaxLength="250" />
           <Property Name="Celular" Type="varchar" MaxLength="8" Nullable="false" />
           <Property Name="DepartamentoId" Type="int" Nullable="false" />
-          <Property Name="ProyectoId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Proyecto">
           <Key>
@@ -34,6 +33,15 @@
           <Property Name="FechaInicio" Type="datetime" Nullable="false" />
           <Property Name="FechaFin" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="ProyectoEmpleado">
+          <Key>
+            <PropertyRef Name="ProyectoId" />
+            <PropertyRef Name="EmpleadoId" />
+          </Key>
+          <Property Name="ProyectoId" Type="int" Nullable="false" />
+          <Property Name="EmpleadoId" Type="int" Nullable="false" />
+          <Property Name="FechaAlta" Type="datetime" />
+        </EntityType>
         <Association Name="FK_Empleado_Departamento">
           <End Role="Departamento" Type="Self.Departamento" Multiplicity="1" />
           <End Role="Empleado" Type="Self.Empleado" Multiplicity="*" />
@@ -46,14 +54,26 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Empleado_Proyecto">
+        <Association Name="FK_ProyectoEmpleado_Empleado">
+          <End Role="Empleado" Type="Self.Empleado" Multiplicity="1" />
+          <End Role="ProyectoEmpleado" Type="Self.ProyectoEmpleado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empleado">
+              <PropertyRef Name="EmpleadoId" />
+            </Principal>
+            <Dependent Role="ProyectoEmpleado">
+              <PropertyRef Name="EmpleadoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProyectoEmpleado_Proyecto">
           <End Role="Proyecto" Type="Self.Proyecto" Multiplicity="1" />
-          <End Role="Empleado" Type="Self.Empleado" Multiplicity="*" />
+          <End Role="ProyectoEmpleado" Type="Self.ProyectoEmpleado" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Proyecto">
               <PropertyRef Name="ProyectoId" />
             </Principal>
-            <Dependent Role="Empleado">
+            <Dependent Role="ProyectoEmpleado">
               <PropertyRef Name="ProyectoId" />
             </Dependent>
           </ReferentialConstraint>
@@ -62,17 +82,21 @@
           <EntitySet Name="Departamento" EntityType="Self.Departamento" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Empleado" EntityType="Self.Empleado" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Proyecto" EntityType="Self.Proyecto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProyectoEmpleado" EntityType="Self.ProyectoEmpleado" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Empleado_Departamento" Association="Self.FK_Empleado_Departamento">
             <End Role="Departamento" EntitySet="Departamento" />
             <End Role="Empleado" EntitySet="Empleado" />
           </AssociationSet>
-          <AssociationSet Name="FK_Empleado_Proyecto" Association="Self.FK_Empleado_Proyecto">
-            <End Role="Proyecto" EntitySet="Proyecto" />
+          <AssociationSet Name="FK_ProyectoEmpleado_Empleado" Association="Self.FK_ProyectoEmpleado_Empleado">
             <End Role="Empleado" EntitySet="Empleado" />
+            <End Role="ProyectoEmpleado" EntitySet="ProyectoEmpleado" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProyectoEmpleado_Proyecto" Association="Self.FK_ProyectoEmpleado_Proyecto">
+            <End Role="Proyecto" EntitySet="Proyecto" />
+            <End Role="ProyectoEmpleado" EntitySet="ProyectoEmpleado" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="dbProyectoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -82,22 +106,7 @@
           </Key>
           <Property Name="DepartamentoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NombreDepartamento" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Empleado" Relationship="Self.FK_Empleado_Departamento" FromRole="Departamento" ToRole="Empleado" />
-        </EntityType>
-        <EntityType Name="Empleado">
-          <Key>
-            <PropertyRef Name="EmpleadoId" />
-          </Key>
-          <Property Name="EmpleadoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Nombres" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Apellidos" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Direccion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="Celular" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="DepartamentoId" Type="Int32" Nullable="false" />
-          <Property Name="ProyectoId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Departamento" Relationship="Self.FK_Empleado_Departamento" FromRole="Empleado" ToRole="Departamento" />
-          <NavigationProperty Name="Proyecto" Relationship="Self.FK_Empleado_Proyecto" FromRole="Empleado" ToRole="Proyecto" />
+          <NavigationProperty Name="Empleado" Relationship="dbProyectoModel.FK_Empleado_Departamento" FromRole="Departamento" ToRole="Empleado" />
         </EntityType>
         <EntityType Name="Proyecto">
           <Key>
@@ -107,11 +116,54 @@
           <Property Name="NombreProyecto" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="FechaInicio" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="FechaFin" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Empleado" Relationship="Self.FK_Empleado_Proyecto" FromRole="Proyecto" ToRole="Empleado" />
+          <NavigationProperty Name="ProyectoEmpleado" Relationship="dbProyectoModel.FK_ProyectoEmpleado_Proyecto" FromRole="Proyecto" ToRole="ProyectoEmpleado" />
+        </EntityType>
+        <EntityContainer Name="dbContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Departamento" EntityType="Self.Departamento" />
+          <EntitySet Name="Proyecto" EntityType="Self.Proyecto" />
+          <EntitySet Name="Empleado" EntityType="dbProyectoModel.Empleado" />
+          <EntitySet Name="ProyectoEmpleado" EntityType="dbProyectoModel.ProyectoEmpleado" />
+          <AssociationSet Name="FK_Empleado_Departamento" Association="dbProyectoModel.FK_Empleado_Departamento">
+            <End Role="Departamento" EntitySet="Departamento" />
+            <End Role="Empleado" EntitySet="Empleado" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProyectoEmpleado_Empleado" Association="dbProyectoModel.FK_ProyectoEmpleado_Empleado">
+            <End Role="Empleado" EntitySet="Empleado" />
+            <End Role="ProyectoEmpleado" EntitySet="ProyectoEmpleado" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProyectoEmpleado_Proyecto" Association="dbProyectoModel.FK_ProyectoEmpleado_Proyecto">
+            <End Role="Proyecto" EntitySet="Proyecto" />
+            <End Role="ProyectoEmpleado" EntitySet="ProyectoEmpleado" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="Empleado">
+          <Key>
+            <PropertyRef Name="EmpleadoId" />
+          </Key>
+          <Property Name="EmpleadoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombres" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Apellidos" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Direccion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Celular" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="DepartamentoId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Departamento" Relationship="dbProyectoModel.FK_Empleado_Departamento" FromRole="Empleado" ToRole="Departamento" />
+          <NavigationProperty Name="ProyectoEmpleado" Relationship="dbProyectoModel.FK_ProyectoEmpleado_Empleado" FromRole="Empleado" ToRole="ProyectoEmpleado" />
+        </EntityType>
+        <EntityType Name="ProyectoEmpleado">
+          <Key>
+            <PropertyRef Name="ProyectoId" />
+            <PropertyRef Name="EmpleadoId" />
+          </Key>
+          <Property Name="ProyectoId" Type="Int32" Nullable="false" />
+          <Property Name="EmpleadoId" Type="Int32" Nullable="false" />
+          <Property Name="FechaAlta" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Empleado" Relationship="dbProyectoModel.FK_ProyectoEmpleado_Empleado" FromRole="ProyectoEmpleado" ToRole="Empleado" />
+          <NavigationProperty Name="Proyecto" Relationship="dbProyectoModel.FK_ProyectoEmpleado_Proyecto" FromRole="ProyectoEmpleado" ToRole="Proyecto" />
         </EntityType>
         <Association Name="FK_Empleado_Departamento">
-          <End Role="Departamento" Type="Self.Departamento" Multiplicity="1" />
-          <End Role="Empleado" Type="Self.Empleado" Multiplicity="*" />
+          <End Type="dbProyectoModel.Departamento" Role="Departamento" Multiplicity="1" />
+          <End Type="dbProyectoModel.Empleado" Role="Empleado" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Departamento">
               <PropertyRef Name="DepartamentoId" />
@@ -121,31 +173,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Empleado_Proyecto">
-          <End Role="Proyecto" Type="Self.Proyecto" Multiplicity="1" />
-          <End Role="Empleado" Type="Self.Empleado" Multiplicity="*" />
+        <Association Name="FK_ProyectoEmpleado_Empleado">
+          <End Type="dbProyectoModel.Empleado" Role="Empleado" Multiplicity="1" />
+          <End Type="dbProyectoModel.ProyectoEmpleado" Role="ProyectoEmpleado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empleado">
+              <PropertyRef Name="EmpleadoId" />
+            </Principal>
+            <Dependent Role="ProyectoEmpleado">
+              <PropertyRef Name="EmpleadoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProyectoEmpleado_Proyecto">
+          <End Type="dbProyectoModel.Proyecto" Role="Proyecto" Multiplicity="1" />
+          <End Type="dbProyectoModel.ProyectoEmpleado" Role="ProyectoEmpleado" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Proyecto">
               <PropertyRef Name="ProyectoId" />
             </Principal>
-            <Dependent Role="Empleado">
+            <Dependent Role="ProyectoEmpleado">
               <PropertyRef Name="ProyectoId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="dbContext" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Departamento" EntityType="Self.Departamento" />
-          <EntitySet Name="Empleado" EntityType="Self.Empleado" />
-          <EntitySet Name="Proyecto" EntityType="Self.Proyecto" />
-          <AssociationSet Name="FK_Empleado_Departamento" Association="Self.FK_Empleado_Departamento">
-            <End Role="Departamento" EntitySet="Departamento" />
-            <End Role="Empleado" EntitySet="Empleado" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Empleado_Proyecto" Association="Self.FK_Empleado_Proyecto">
-            <End Role="Proyecto" EntitySet="Proyecto" />
-            <End Role="Empleado" EntitySet="Empleado" />
-          </AssociationSet>
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -160,20 +211,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Empleado">
-            <EntityTypeMapping TypeName="dbProyectoModel.Empleado">
-              <MappingFragment StoreEntitySet="Empleado">
-                <ScalarProperty Name="EmpleadoId" ColumnName="EmpleadoId" />
-                <ScalarProperty Name="Nombres" ColumnName="Nombres" />
-                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
-                <ScalarProperty Name="Celular" ColumnName="Celular" />
-                <ScalarProperty Name="DepartamentoId" ColumnName="DepartamentoId" />
-                <ScalarProperty Name="ProyectoId" ColumnName="ProyectoId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Proyecto">
             <EntityTypeMapping TypeName="dbProyectoModel.Proyecto">
               <MappingFragment StoreEntitySet="Proyecto">
@@ -181,6 +218,28 @@
                 <ScalarProperty Name="NombreProyecto" ColumnName="NombreProyecto" />
                 <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
                 <ScalarProperty Name="FechaFin" ColumnName="FechaFin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Empleado">
+            <EntityTypeMapping TypeName="dbProyectoModel.Empleado">
+              <MappingFragment StoreEntitySet="Empleado">
+                <ScalarProperty Name="DepartamentoId" ColumnName="DepartamentoId" />
+                <ScalarProperty Name="Celular" ColumnName="Celular" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+                <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+                <ScalarProperty Name="EmpleadoId" ColumnName="EmpleadoId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProyectoEmpleado">
+            <EntityTypeMapping TypeName="dbProyectoModel.ProyectoEmpleado">
+              <MappingFragment StoreEntitySet="ProyectoEmpleado">
+                <ScalarProperty Name="FechaAlta" ColumnName="FechaAlta" />
+                <ScalarProperty Name="EmpleadoId" ColumnName="EmpleadoId" />
+                <ScalarProperty Name="ProyectoId" ColumnName="ProyectoId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

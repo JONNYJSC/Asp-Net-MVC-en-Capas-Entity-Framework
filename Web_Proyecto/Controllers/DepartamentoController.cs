@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace Web_Proyecto.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class DepartamentoController : Controller
     {
         // GET: Departamento
@@ -48,6 +49,12 @@ namespace Web_Proyecto.Controllers
         {
             var dpto = DepartamentoCN.GetDepartamento(id);
             return View(dpto);
+        }
+
+        public JsonResult GetDepartamentos()
+        {
+            var lista = DepartamentoCN.ListarDepartamentos();
+            return Json(new { data = lista },JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
