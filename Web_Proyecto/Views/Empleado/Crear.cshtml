@@ -16,7 +16,7 @@
         <div class="form-group">
             <label class="control-label col-md-2">Nombres</label>
             <div class="col-md-10">
-                <input type="text" class="form-control" id="NombreEmpleado" name="Nombres"
+                <input type="text" class="form-control" id="Nombres" name="Nombres"
                        placeholder="Ingresa nombres del Empleado" />
                 @Html.ValidationMessageFor(model => model.Nombres, "", new { @class = "text-danger" })
             </div>
@@ -25,7 +25,7 @@
         <div class="form-group">
             <label class="control-label col-md-2">Apellidos</label>
             <div class="col-md-10">
-                <input type="text" class="form-control" id="Nombres" name="Apellidos"
+                <input type="text" class="form-control" id="Apellidos" name="Apellidos"
                        placeholder="Ingresa apellidos del Empleado" />
                 @Html.ValidationMessageFor(model => model.Apellidos, "", new { @class = "text-danger" })
             </div>
@@ -34,7 +34,7 @@
         <div class="form-group">
             <label class="control-label col-md-2">Email</label>
             <div class="col-md-10">
-                <input type="text" class="form-control" id="NombreEmpleado" name="Nombres"
+                <input type="text" class="form-control" id="Email" name="Email"
                        placeholder="Ingresa email del Empleado" />
                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
             </div>
@@ -43,7 +43,7 @@
         <div class="form-group">
             <label class="control-label col-md-2">Direicción</label>
             <div class="col-md-10">
-                <input type="text" class="form-control" id="NombreEmpleado" name="Nombres"
+                <input type="text" class="form-control" id="Direccion" name="Direccion"
                        placeholder="Ingresa direccion del Empleado" />
                 @Html.ValidationMessageFor(model => model.Direccion, "", new { @class = "text-danger" })
             </div>
@@ -52,7 +52,7 @@
         <div class="form-group">
             <label class="control-label col-md-2">Celular</label>
             <div class="col-md-10">
-                <input type="text" class="form-control" id="NombreEmpleado" name="Nombres"
+                <input type="text" class="form-control" id="Celular" name="Celular"
                        placeholder="Ingresa celular del Empleado" />
                 @Html.ValidationMessageFor(model => model.Celular, "", new { @class = "text-danger" })
             </div>
@@ -76,7 +76,9 @@
 </form>
 
 <div>
-    @Html.ActionLink("Regresar", "Index")
+    <a href="@Url.Action("Index", "Empleado")" class="btn btn-info">
+        <i class="glyphicon glyphicon-chevron-left"></i> Regersar
+    </a>
 </div>
 
 @section Scripts {
@@ -90,8 +92,6 @@
         // Jquery
         // trae el valor del text box
         var nombre = $("#Nombres").val();
-        var fechaInicio = $("#FechaInicio").val();
-        var fechaFin = $("#FechaFin").val();
 
         // trim no permite espacios en blanco
         var dptoId = $("#DepartamentoId").val();
@@ -102,16 +102,6 @@
 
         if ($.trim(nombre) == "") {
             alert("Debe ingresar el nombre del Empleado!!!");
-            return;
-        }
-
-        if (fechaInicio == "" || fechaFin == "") {
-            alert("Debe ingresar la Fecha de Inicio y la Fecha Fin!!!");
-            return;
-        }
-
-        if (ValidarFechas(fechaInicio, fechaFin) == false) {
-            alert("La Fecha Fin no puede ser menor a la Fecha de Inicio!!!");
             return;
         }
 

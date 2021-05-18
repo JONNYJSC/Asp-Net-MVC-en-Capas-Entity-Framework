@@ -251,7 +251,7 @@
     <Content Include="Views\Proyecto\Editar.cshtml" />
     <Content Include="Views\Empleado\Crear.cshtml" />
     <Content Include="Views\Empleado\Editar.cshtml" />
-    <Content Include="Views\Empleado\GetProyectos.cshtml" />
+    <Content Include="Views\Empleado\GetEmpleados.cshtml" />
     <Content Include="Views\Empleado\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>

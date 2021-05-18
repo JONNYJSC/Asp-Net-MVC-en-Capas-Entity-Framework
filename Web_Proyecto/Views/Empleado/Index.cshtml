@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ENTIDAD.Empleado>
+﻿@model IEnumerable<ENTIDAD.EmpleadoCE>
 
 @{
     ViewBag.Title = "Lista de Empleados";
@@ -15,10 +15,7 @@
     <thead>
         <tr>
             <th>
-                Nombres
-            </th>
-            <th>
-                Apellidos
+                Nombres y Apellidos
             </th>
             <th>
                 Email
@@ -43,10 +40,7 @@
         {
         <tr>
             <td>
-                @item.Nombres
-            </td>
-            <td>
-                @item.Apellidos
+                @item.NombreCompleto
             </td>
             <td>
                 @item.Email
@@ -58,7 +52,7 @@
                 @item.Celular
             </td>
             <td>
-                @item.DepartamentoId
+                @item.NombreDepartamento
             </td>
             <td>
                 <a title="Editar" href="@Url.Action("Editar", "Empleado", new { id=item.EmpleadoId })" class="btn btn-primary btn-xs">

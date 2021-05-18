@@ -17,12 +17,12 @@ namespace NEGOCIO
             obj.Agregar(empleado);
         }
 
-        public static List<Empleado> ListarEmpleados()
+        public static List<EmpleadoCE> ListarEmpleados()
         {
             return obj.ListarEmpleados();
         }
 
-        public static Empleado ObtenerEmpleado(int id)
+        public static EmpleadoCE ObtenerEmpleado(int id)
         {
             return obj.ObtenerEmpleado(id);
         }

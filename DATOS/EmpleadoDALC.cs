@@ -19,7 +19,7 @@ namespace DATOS
             }
         }
 
-        public List<Empleado> ListarEmpleados()
+        public List<EmpleadoCE> ListarEmpleados()
         {
             string sql = @"select e.EmpleadoId, e.Nombres, e.Apellidos, e.Email, e.Direccion, e.Celular,
 	                e.DepartamentoId, d.NombreDepartamento
@@ -27,11 +27,11 @@ namespace DATOS
                 inner join Departamento d on e.DepartamentoId = d.DepartamentoId";
             using (var db = new dbContext())
             {
-                return db.Database.SqlQuery<Empleado>(sql).ToList();
+                return db.Database.SqlQuery<EmpleadoCE>(sql).ToList();
             }
         }
 
-        public Empleado ObtenerEmpleado(int id)
+        public EmpleadoCE ObtenerEmpleado(int id)
         {
             string sql = @"select e.EmpleadoId, e.Nombres, e.Apellidos, e.Email, e.Direccion, e.Celular,
 	                e.DepartamentoId, d.NombreDepartamento
@@ -42,7 +42,7 @@ namespace DATOS
             {
                 //return db.Empleado.Where(p => p.ProyectoId == id).FirstOrDefault();
                 //return db.Empleado.Find(id);
-                return db.Database.SqlQuery<Empleado>(sql,
+                return db.Database.SqlQuery<EmpleadoCE>(sql,
                     new SqlParameter("@EmpleadoId", id)).FirstOrDefault();
             }
         }

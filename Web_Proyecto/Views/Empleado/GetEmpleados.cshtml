@@ -1,0 +1,62 @@
+﻿@model ENTIDAD.EmpleadoCE
+
+@{
+    ViewBag.Title = "Empleados";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <h4>Detalles del Empleado</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Nombres y Apellidos
+        </dt>
+
+        <dd>
+            @Model.NombreCompleto
+        </dd>
+
+        <dt>
+            Email
+        </dt>
+
+        <dd>
+            @Model.Email
+        </dd>
+
+        <dt>
+            Dirección
+        </dt>
+
+        <dd>
+            @Model.Direccion
+        </dd>
+
+        <dt>
+            Celular
+        </dt>
+
+        <dd>
+            @Model.Celular
+        </dd>
+
+        <dt>
+            Departamento
+        </dt>
+
+        <dd>
+            @Model.NombreDepartamento
+        </dd>
+
+    </dl>
+</div>
+<p>
+    <a title="Editar" href="@Url.Action("Editar", "Empleado", new { id=Model.EmpleadoId })" class="btn btn-danger">
+        <i class="glyphicon glyphicon-trash"></i> Eliminar
+    </a>
+
+    <a href="@Url.Action("Index", "Empleado")" class="btn btn-info">
+        <i class="glyphicon glyphicon-chevron-left"></i> Regersar
+    </a>
+</p>

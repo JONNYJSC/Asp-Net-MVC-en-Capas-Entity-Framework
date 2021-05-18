@@ -1,41 +1,70 @@
-﻿@model ENTIDAD.Proyecto
+﻿@model ENTIDAD.EmpleadoCE
 
 @{
-    ViewBag.Title = "Editar Proyecto";
+    ViewBag.Title = "Editar Empleado";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<form action="@Url.Action("Editar","Proyecto")" method="post" id="frmProyecto">
+<form action="@Url.Action("Editar","Empleado")" method="post" id="frmEmpleado">
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>Editar Proyecto</h4>
+        <h4>Editar Empleado</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.ProyectoId)
+        @Html.HiddenFor(model => model.EmpleadoId)
 
         <div class="form-group">
-            <label class="control-label col-md-2">Nombre del Proyecto</label>
+            <label class="control-label col-md-2">Nombres</label>
             <div class="col-md-10">
-                <input type="text" class="form-control" id="NombreProyecto" name="NombreProyecto"
-                       value="@Model.NombreProyecto" placeholder="Ingresa nombre del proyecto" />
-                @Html.ValidationMessageFor(model => model.NombreProyecto, "", new { @class = "text-danger" })
+                <input type="text" class="form-control" id="Nombres" name="Nombres"
+                       value="@Model.Nombres" placeholder="Ingresa nombres del Empleado" />
+                @Html.ValidationMessageFor(model => model.Nombres, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2">Fecha Inicio</label>
+            <label class="control-label col-md-2">Apellidos</label>
             <div class="col-md-10">
-                <input type="date" class="form-control" id="FechaInicio" name="FechaInicio" value="@Model.FechaInicio.ToString("yyyy-MM-dd")" />
-                @Html.ValidationMessageFor(model => model.FechaInicio, "", new { @class = "text-danger" })
+                <input type="text" class="form-control" id="Apellidos" name="Apellidos"
+                       value="@Model.Apellidos" placeholder="Ingresa apellidos del Empleado" />
+                @Html.ValidationMessageFor(model => model.Apellidos, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2">Fecha Fin</label>
+            <label class="control-label col-md-2">Email</label>
             <div class="col-md-10">
-                <input type="date" class="form-control" id="FechaFin" name="FechaFin" value="@Model.FechaFin.ToString("yyyy-MM-dd")" />
-                @Html.ValidationMessageFor(model => model.FechaFin, "", new { @class = "text-danger" })
+                <input type="text" class="form-control" id="Email" name="Email"
+                       value="@Model.Email" placeholder="Ingresa email del Empleado" />
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Direicción</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" id="Direccion" name="Direccion"
+                       value="@Model.Direccion" placeholder="Ingresa direccion del Empleado" />
+                @Html.ValidationMessageFor(model => model.Direccion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Celular</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" id="Celular" name="Celular"
+                       value="@Model.Celular" placeholder="Ingresa celular del Empleado" />
+                @Html.ValidationMessageFor(model => model.Celular, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Departamentos</label>
+            <div class="col-md-10">
+                <select class="form-control" id="DepartamentoId" name="DepartamentoId">
+                    <option value="">Seleccione...</option>
+                </select>
             </div>
         </div>
 
@@ -47,7 +76,7 @@
     </div>
 </form>
     <div>
-        <a href="@Url.Action("Index", "Proyecto")" class="btn btn-info">
+        <a href="@Url.Action("Index", "Empleado")" class="btn btn-info">
             <i class="glyphicon glyphicon-chevron-left"></i> Regersar
         </a>
     </div>
@@ -55,37 +84,36 @@
     @section Scripts {
         @Scripts.Render("~/bundles/jqueryval")
         <script>
-            $("#frmProyecto").submit(function (event) {
+
+            getDepartamentos(function (result) {
+            $("#DepartamentoId").val(@Model.DepartamentoId);
+            });
+
+            $("#frmEmpleado").submit(function (event) {
                 event.preventDefault(); //Evita que la pagina se recargue
 
                 // Jquery
                 // trae el valor del text box
-                var nombre = $("#NombreProyecto").val();
-                var fechaInicio = $("#FechaInicio").val();
-                var fechaFin = $("#FechaFin").val();
+                var nombre = $("#Nombres").val();
 
                 // trim no permite espacios en blanco
+                var dptoId = $("#DepartamentoId").val();
+                if (dptoId == "") {
+                    alert("Debe escoger un departamento!!!");
+                    return;
+                }
+
                 if ($.trim(nombre) == "") {
-                    alert("Debe ingresar el nombre del proyecto!!!");
+                    alert("Debe ingresar el nombre del Empleado!!!");
                     return;
                 }
 
-                if (fechaInicio == "" || fechaFin == "") {
-                    alert("Debe ingresar la Fecha de Inicio y la Fecha Fin!!!");
-                    return;
-                }
-
-                if (ValidarFechas(fechaInicio, fechaFin) == false) {
-                    alert("La Fecha Fin no puede ser menor a la Fecha de Inicio!!!");
-                    return;
-                }
-                ;
                 var post_url = $(this).attr("action"); // Enviamos la accion
                 var request_method = $(this).attr("method"); // Enviamos form GET/POST
                 var form_data = $(this).serializeArray(); // Encode form elements for submission
                 console.log(form_data);
 
-                LoadingOverlayShow("#frmProyecto");
+                LoadingOverlayShow("#frmEmpleado");
 
                 $.ajax({
                     url: post_url,
@@ -94,15 +122,15 @@
                 }).done(function (response) {
                     console.log(response);
 
-                    LoadingOverlayHide("#frmProyecto");
+                    LoadingOverlayHide("#frmEmpleado");
 
                     if (response.ok) {
-                        alert("Proyecto Actualizado correctamente!!!");
+                        alert("Empleado Actualizado correctamente!!!");
                         window.location = response.toRedirect;
                     }
                     else { alert(response.msg); }
                 }).fail(function (jqXHR, textStatus, errorThrown) {
-                    LoadingOverlayHide("#frmProyecto");
+                    LoadingOverlayHide("#frmEmpleado");
                     alert(textStatus);
                 });
             });
