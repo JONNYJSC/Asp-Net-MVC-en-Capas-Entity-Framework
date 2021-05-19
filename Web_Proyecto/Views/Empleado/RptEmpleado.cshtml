@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "Reporte Empleado";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<button class="btn btn-primary" onclick="DescargarPDF()">
+    <i class="glyphicon glyphicon-download"></i> Descargar Reporte PDF
+</button>
+
+<button class="btn btn-primary" onclick="DescargarExcel()">
+    <i class="glyphicon glyphicon-download"></i> Descargar Reporte Excel
+</button>
+
+<button class="btn btn-success" onclick="Mostrar()">
+    <i class="glyphicon glyphicon-eye-open"></i> Mostrar Reporte
+</button>
+
+<hr />
+
+<iframe id="frmEmpledo" width="100%" height="550px" frameborder="0" scrolling="no"></iframe>
+
+@section scripts{
+    <script>
+        function DescargarPDF() {
+            window.open("/Empleado/DescargarReporteEmpleado");
+        }
+
+        function DescargarExcel() {
+            window.open("/Empleado/DescargarReporteEmpleadoExcel");
+        }
+
+        function Mostrar() {
+            $("#frmEmpledo")
+                .attr("src", "/Empleado/DescargarReporteEmpleado")
+                .load();
+        }
+    </script>
+}

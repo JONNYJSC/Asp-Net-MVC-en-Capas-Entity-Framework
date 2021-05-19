@@ -166,6 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\CrystalReportsCnn.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -263,6 +264,7 @@
     <Content Include="Views\Empleado\GetEmpleados.cshtml" />
     <Content Include="Views\Empleado\Index.cshtml" />
     <Content Include="Views\Proyecto\AsignarProyecto.cshtml" />
+    <Content Include="Views\Empleado\RptEmpleado.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
