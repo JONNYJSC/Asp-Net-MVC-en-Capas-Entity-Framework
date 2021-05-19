@@ -38,3 +38,41 @@ function getDepartamentos(myCallback) {
         }
     });
 }
+
+function ListarProyectos(myCallback) {
+    $.ajax({
+        type: "GET",
+        url: '/Proyecto/ListarProyectos',
+        dataType: "json",
+        success: function (result) {
+            $.each(result.data, function (key, item) {
+                $("#ProyectoId").append('<option value=' + item.ProyectoId + '>' + item.NombreProyecto + '</option>');
+            });
+
+            if (myCallback != undefined)
+                return myCallback(result.data);
+        },
+        error: function (data) {
+            alert('error');
+        }
+    });
+}
+
+function ListarEmpleados(myCallback) {
+    $.ajax({
+        type: "GET",
+        url: '/Empleado/ListarEmpleados',
+        dataType: "json",
+        success: function (result) {
+            $.each(result.data, function (key, item) {
+                $("#EmpleadoId").append('<option value=' + item.EmpleadoId + '>' + item.Nombres + ' ' + item.Apellidos + '</option>');
+            });
+
+            if (myCallback != undefined)
+                return myCallback(result.data);
+        },
+        error: function (data) {
+            alert('error');
+        }
+    });
+}

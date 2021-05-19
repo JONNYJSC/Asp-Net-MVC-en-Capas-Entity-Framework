@@ -89,5 +89,19 @@ namespace Web_Empleado.Controllers
                 return Json(new { ok = false, msg = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        [HttpGet]
+        public JsonResult ListarEmpleados()
+        {
+            try
+            {
+                var lista = EmpleadoCN.ListarEmpleados();
+                return Json(new { data = lista }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { ok = false, msg = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

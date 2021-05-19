@@ -78,6 +78,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="spListarProyectos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="dbProyectoModelStoreContainer">
           <EntitySet Name="Departamento" EntityType="Self.Departamento" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Empleado" EntityType="Self.Empleado" Schema="dbo" store:Type="Tables" />
@@ -135,6 +136,7 @@
             <End Role="Proyecto" EntitySet="Proyecto" />
             <End Role="ProyectoEmpleado" EntitySet="ProyectoEmpleado" />
           </AssociationSet>
+          <FunctionImport Name="spListarProyectos" ReturnType="Collection(dbProyectoModel.spListarProyectos_Result)" />
           </EntityContainer>
         <EntityType Name="Empleado">
           <Key>
@@ -197,6 +199,12 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="spListarProyectos_Result">
+          <Property Type="Int32" Name="ProyectoId" Nullable="false" />
+          <Property Type="String" Name="NombreProyecto" Nullable="false" MaxLength="150" />
+          <Property Type="DateTime" Name="FechaInicio" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="FechaFin" Nullable="false" Precision="23" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -243,6 +251,16 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spListarProyectos" FunctionName="dbProyectoModel.Store.spListarProyectos">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="dbProyectoModel.spListarProyectos_Result">
+                <ScalarProperty Name="ProyectoId" ColumnName="ProyectoId" />
+                <ScalarProperty Name="NombreProyecto" ColumnName="NombreProyecto" />
+                <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
+                <ScalarProperty Name="FechaFin" ColumnName="FechaFin" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
