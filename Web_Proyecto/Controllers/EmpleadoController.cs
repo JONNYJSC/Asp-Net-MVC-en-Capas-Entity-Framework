@@ -113,13 +113,18 @@ namespace Web_Empleado.Controllers
             return View();
         }
 
-        public ActionResult DescargarReporteEmpleado()
+        public ActionResult DescargarReporteEmpleado(int codigo, string algo)
+        //public ActionResult DescargarReporteEmpleado(int codigo)
         {
             try
             {
                 var rptH = new ReportClass();
                 rptH.FileName = Server.MapPath("/Reportes/EmpleadoReporte1.rpt");
                 rptH.Load();
+
+                // por parametro
+                rptH.SetParameterValue("DptoId", codigo);
+                //rptH.SetParameterValue("ParamAlgo", algo);
 
                 // Report connection
                 var connInfo = CrystalReportsCnn.GetConnectionInfo();

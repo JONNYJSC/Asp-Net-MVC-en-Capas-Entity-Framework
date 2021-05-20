@@ -4,6 +4,19 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
+<div class="row">
+    <br />
+    <div class="form-group">
+        <div class="col-md-6">
+            <label>Departamento:</label>
+            <select class="form-control" id="DepartamentoId">
+                <option value="">Seleccione...</option>
+            </select>
+        </div>
+    </div>
+</div>
+
 <br />
 <button class="btn btn-primary" onclick="DescargarPDF()">
     <i class="glyphicon glyphicon-download"></i> Descargar Reporte PDF
@@ -23,18 +36,64 @@
 
 @section scripts{
     <script>
+        getDepartamentos();
+        var dpto = $("#DepartamentoId");
+
         function DescargarPDF() {
-            window.open("/Empleado/DescargarReporteEmpleado");
+            if (dpto.val() == "") {
+                alert("Debe seleccionar un departamento!!!");
+                return;
+            }
+
+            //array de parametros
+            var data = {
+                codigo: dpto.val(),
+                algo: "jonny"
+            };
+
+            var params = jQuery.param(data);
+
+        /*window.open("/Empleado/DescargarReporteEmpleado/" + dpto.val());*/
+            //window.open("/Empleado/DescargarReporteEmpleado?codigo=" + dpto.val()); 
+            //window.open("/Empleado/DescargarReporteEmpleado?codigo=" + dpto.val() + "&algo=" + "nuevoParametro");  
+            window.open("/Empleado/DescargarReporteEmpleado?" + params); 
         }
 
         function DescargarExcel() {
-            window.open("/Empleado/DescargarReporteEmpleadoExcel");
+            if (dpto.val() == "") {
+                alert("Debe seleccionar un departamento!!!");
+                return;
+            }
+            //array de parametros
+            // pasar mas de un parametro
+            var data = {
+                codigo: dpto.val(),
+                algo: "jonny"
+            };
+
+            var params = jQuery.param(data);
+
+            //window.open("/Empleado/DescargarReporteEmpleadoExcel/" + dpto.val());
+            window.open("/Empleado/DescargarReporteEmpleado?" + params); 
         }
 
         function Mostrar() {
+            if (dpto.val() == "") {
+                alert("Debe seleccionar un departamento!!!");
+                return;
+            }
+            //array de parametros
+            var data = {
+                codigo: dpto.val(),
+                algo: "jonny"
+            };
+
+            var params = jQuery.param(data);
             $("#frmEmpledo")
-                .attr("src", "/Empleado/DescargarReporteEmpleado")
+                .attr("src", "/Empleado/DescargarReporteEmpleado?" + params)
                 .load();
+                //.attr("src", "/Empleado/DescargarReporteEmpleado/" + dpto.val())
+                //.load();
         }
     </script>
 }
