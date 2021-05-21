@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -157,6 +158,7 @@ namespace Web_Proyecto.Controllers
                 if (result.Succeeded)
                 {
                     var RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
+
                     var RoleName = "Admin";
                     if (!RoleManager.RoleExists(RoleName))
                     {

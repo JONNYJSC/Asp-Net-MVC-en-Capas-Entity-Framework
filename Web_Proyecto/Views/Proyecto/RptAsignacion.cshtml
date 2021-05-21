@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "Reporte Asignaciones";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<button class="btn btn-primary" onclick="DescargarPDF()">
+    <i class="glyphicon glyphicon-download"></i> Descargar Reporte PDF
+</button>
+
+@section scripts{
+    <script>
+        function DescargarPDF() {
+            window.open("/Proyecto/DescargarReporteAsignaciones");
+        }
+    </script>
+}
+

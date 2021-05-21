@@ -25,7 +25,7 @@
     </div>
 
     <div class="form-group">
-        <div class="col-md-offset-3 col-md-4">
+        <div class="col-md-offset-4 col-md-4">
             <br />
             <button type="button" class="btn btn-primary btn-block" onclick="AsignarProyecto()">
                 <i class="glyphicon glyphicon-hand-up"></i> Asignar</button>
@@ -35,7 +35,7 @@
     <hr />
 
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-5">
+        <div class="col-md-offset-2 col-md-9">
             <table class="table table-bordered table-condensed table-striped">
                 <thead>
                     <tr>
@@ -80,24 +80,32 @@
                 return;
             }
 
-            LoadingOverlayShow("#divAsignar");
-
-            $.ajax({
-                url: "/Proyecto/AsignarProyecto",
-                type: "post",
-                data: { proyectoId, empleadoId }
-            }).done(function (response) {
-
-                LoadingOverlayHide("#divAsignar");
-
-                if (response.ok) {
-                    alert("Asignación Creada correctamente!!!");
-                    window.location = response.toRedirect;
+            $.confirm({
+                title: 'Agregar Asignación!',
+                content: '¿Estás seguro de agregar esta asignación?',
+                buttons: {
+                    Confirmar: function () {
+                        LoadingOverlayShow("#divAsignar");
+                        $.ajax({
+                            url: "/proyecto/asignarproyecto",
+                            type: "post",
+                            data: { proyectoId, empleadoId }
+                        }).done(function (response) {
+                            LoadingOverlayHide("#divAsignar");
+                            if (response.ok) {
+                                alert("Asignación creada correctamente.");
+                                window.location = response.toRedirect;
+                            }
+                            else {
+                                alert(response.msg);
+                            }
+                        }).fail(function (jqXHR, textStatus, errorThrown) {
+                            LoadingOverlayHide("#divAsignar");
+                        });
+                    },
+                    Cancelar: function () {
+                    },
                 }
-                else { alert(response.msg); }
-            }).fail(function (jqXHR, textStatus, errorThrown) {
-                LoadingOverlayHide("#divAsignar");
-                alert(textStatus);
             });
         }
 
