@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Web_Proyecto.App_Start;
 
 namespace Web_Proyecto.Controllers
 {
@@ -195,17 +196,18 @@ namespace Web_Proyecto.Controllers
             return View();
         }
 
-        public ActionResult DescargarReporteAsignaciones()
+        public ActionResult DescargarReporteAsignaciones(int? id)
         {
             try
             {
-                var asignaciones = ProyectoCN.ListarAsignaciones();
-
                 var rptH = new ReportClass();
                 rptH.FileName = Server.MapPath("/Reportes/AsignacionReport.rpt");
                 rptH.Load();
 
-                rptH.SetDataSource(asignaciones);
+                if (id == null)
+                    rptH.SetDataSource(ProyectoCN.ListarAsignaciones());
+                else
+                    rptH.SetDataSource(ProyectoCN.ListarAsignaciones(id.Value));
 
                 Response.Buffer = false;
                 Response.ClearContent();
@@ -216,6 +218,46 @@ namespace Web_Proyecto.Controllers
                 rptH.Dispose();
                 rptH.Close();
                 return new FileStreamResult(stream, "application/pdf");
+            }
+            catch (Exception ex)
+            {
+                return Json(new { ok = false, msg = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult DescargarReporteAsignacionesExcel(int? id)
+        {
+            try
+            {
+                var rptH = new ReportClass();
+                rptH.FileName = Server.MapPath("/Reportes/AsignacionReport.rpt");
+                rptH.Load();
+
+                if (id == null)
+                    rptH.SetDataSource(ProyectoCN.ListarAsignaciones());
+                else
+                    rptH.SetDataSource(ProyectoCN.ListarAsignaciones(id.Value));
+
+                // Report connection
+                var connInfo = CrystalReportsCnn.GetConnectionInfo();
+                TableLogOnInfo logonInfo = new TableLogOnInfo();
+                Tables tables;
+                tables = rptH.Database.Tables;
+                foreach (Table table in tables)
+                {
+                    logonInfo = table.LogOnInfo;
+                    logonInfo.ConnectionInfo = connInfo;
+                    table.ApplyLogOnInfo(logonInfo);
+                }
+
+                Response.Buffer = false;
+                Response.ClearContent();
+                Response.ClearHeaders();
+
+                // Descargar en Excel
+                Stream stream = rptH.ExportToStream(ExportFormatType.Excel);
+                stream.Seek(0, SeekOrigin.Begin);
+                return File(stream, "application/vnd.ms-excel", "asignacionRpt.xls");
             }
             catch (Exception ex)
             {

@@ -4,15 +4,50 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="row">
+    <br />
+    <div class="form-group">
+        <div class="col-md-6">
+            <label>Proyecto:</label>
+            <select class="form-control" id="ProyectoId">
+                <option value="">--- Todos ---</option>
+            </select>
+        </div>
+    </div>
+</div>
+
 <br />
 <button class="btn btn-primary" onclick="DescargarPDF()">
     <i class="glyphicon glyphicon-download"></i> Descargar Reporte PDF
 </button>
 
+<button class="btn btn-primary" onclick="DescargarExcel()">
+    <i class="glyphicon glyphicon-download"></i> Descargar Reporte Excel
+</button>
+
+<button class="btn btn-success" onclick="Mostrar()">
+    <i class="glyphicon glyphicon-eye-open"></i> Mostrar Reporte
+</button>
+
+<hr />
+
+<iframe id="frmAsignacion" width="100%" height="550px" frameborder="0" scrolling="no"></iframe>
+
 @section scripts{
     <script>
+        ListarProyectos();
+        var proyecto = $("#ProyectoId");
+
         function DescargarPDF() {
-            window.open("/Proyecto/DescargarReporteAsignaciones");
+            window.open("/Proyecto/DescargarReporteAsignaciones/" + proyecto.val());
+        }
+        function DescargarExcel() {
+            window.open("/Proyecto/DescargarReporteAsignacionesExcel/" + proyecto.val());
+        }
+        function Mostrar() {
+            $("#frmAsignacion")
+                .attr("src", "/Proyecto/DescargarReporteAsignaciones/" + proyecto.val())
+                .load();
         }
     </script>
 }
